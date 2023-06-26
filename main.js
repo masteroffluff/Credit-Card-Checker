@@ -19,6 +19,13 @@ const mystery3 = [6, 0, 1, 1, 3, 7, 7, 0, 2, 0, 9, 6, 2, 6, 5, 6, 2, 0, 3]
 const mystery4 = [4, 9, 2, 9, 8, 7, 7, 1, 6, 9, 2, 1, 7, 0, 9, 3]
 const mystery5 = [4, 9, 1, 3, 5, 4, 0, 4, 6, 3, 0, 7, 2, 5, 2, 3]
 
+// Invalid but all mastercards and one weird one, given my username it had to be mastercard 
+const master1 = [5, 4, 4, 8, 0, 1, 9, 6, 8, 3, 0, 5, 4, 1, 4]
+const master2 = [5, 4, 6, 6, 1, 0, 0, 8, 6, 1, 6, 2, 0, 2, 3, 9]
+const master3 = [5, 0, 1, 1, 3, 7, 7, 0, 2, 0, 9, 6, 2, 6, 5, 6, 2, 0, 3]
+const master4 = [5, 9, 2, 9, 8, 7, 7, 1, 6, 9, 2, 1, 7, 0, 9, 3]
+const master5 = [7, 9, 1, 3, 5, 4, 0, 4, 6, 3, 0, 7, 2, 5, 2, 3]
+
 // An array of all the arrays above
 const batch = [valid1, valid2, valid3, valid4, valid5, invalid1, invalid2, invalid3, invalid4, invalid5, mystery1, mystery2, mystery3, mystery4, mystery5]
 
@@ -59,11 +66,13 @@ function getCompany(arr){
         case 4:
             return 'Visa';
         case 5:
-            return 'Mastercard'
+            return 'Mastercard';
         case 6:  
-            return'Discover'
+            return'Discover';
         default:
-            return 'Company not found'
+            console.log ('Company not found');
+            return false
+            break; 
 
     }
 }
@@ -79,7 +88,7 @@ function idInvalidCardCompanies(arr){
         // get the company
         let cardComp = getCompany(card);
         //check if the company is not in the oputput arry (and that the card comp isn't 'Company not found' as that would be silly.)
-        if(cardComp!='Company not found' && !arrInvalComps.some(comp=>comp===cardComp)){
+        if(cardComp && !arrInvalComps.some(comp=>comp===cardComp)){
             // ifs push the comany name to the output array. 
             arrInvalComps.push(cardComp);
         }
@@ -88,4 +97,21 @@ function idInvalidCardCompanies(arr){
     return arrInvalComps;
 }
 
-console.log(idInvalidCardCompanies(batch));
+
+// tests
+// validateion
+
+console.log(validateCred(valid1)); // should return true
+console.log(validateCred(invalid1)); // should return false
+
+// invalid cards
+console.log(findInvalidCards([valid1, valid2, valid3, valid4, valid5]));// Should return empty
+console.log(findInvalidCards([invalid1, invalid2, invalid3, invalid4, invalid5])); // should return everything
+console.log(findInvalidCards(batch)); // tests all the numbers including the mysteries
+
+// invalid card companies
+console.log(idInvalidCardCompanies(([valid1, valid2, valid3, valid4, valid5])));
+console.log(idInvalidCardCompanies([invalid1, invalid2, invalid3, invalid4, invalid5])); // Should print all of the numbers
+console.log(idInvalidCardCompanies([master1, master2, master3, master4, master5])); // should print "mastercard" and also "Company notFound"
+
+

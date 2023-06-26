@@ -87,7 +87,7 @@ function idInvalidCardCompanies(arr){
     arrInvalCards.forEach(card => {
         // get the company
         let cardComp = getCompany(card);
-        //check if the company is not in the oputput arry (and that the card comp isn't 'Company not found' as that would be silly.)
+        //check if the company is not in the oputput array also checks if the return is truthy to avoid not found companies
         if(cardComp && !arrInvalComps.some(comp=>comp===cardComp)){
             // ifs push the comany name to the output array. 
             arrInvalComps.push(cardComp);

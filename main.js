@@ -34,6 +34,7 @@ const batch = [valid1, valid2, valid3, valid4, valid5, invalid1, invalid2, inval
 
 // validate credit card number with Luhn algorithm
 function validateCred(arr){  
+    // not sure if it would have been simplet just to reverse the array. 
     // set up a counter and placeholder for the checksum
     let count = 0, checkSum = 0;
     // loop through the array backwards
@@ -87,7 +88,7 @@ function idInvalidCardCompanies(arr){
     arrInvalCards.forEach(card => {
         // get the company
         let cardComp = getCompany(card);
-        //check if the company is not in the oputput array also checks if the return is truthy to avoid not found companies
+        //check if the company is not in the oputput arry (and that the card comp isn't 'Company not found' as that would be silly.)
         if(cardComp && !arrInvalComps.some(comp=>comp===cardComp)){
             // ifs push the comany name to the output array. 
             arrInvalComps.push(cardComp);
@@ -113,5 +114,60 @@ console.log(findInvalidCards(batch)); // tests all the numbers including the mys
 console.log(idInvalidCardCompanies(([valid1, valid2, valid3, valid4, valid5])));
 console.log(idInvalidCardCompanies([invalid1, invalid2, invalid3, invalid4, invalid5])); // Should print all of the numbers
 console.log(idInvalidCardCompanies([master1, master2, master3, master4, master5])); // should print "mastercard" and also "Company notFound"
+console.log("_________________")
+
+
+// Bonus Challenges
+
+// Text to number array
+
+function SplitString(string){
+    let arr =  string.split("");
+    return arr.map(n=>parseInt(n))
+}
+
+// tests 
+console.log(SplitString("1234")); // returns 1 2 3  and 4 as an arry
+console.log(SplitString("4556167224261062")); // returns a credit card no
+
+console.log(validateCred(SplitString("4556167224261062"))); // should return true
+console.log("_________________")
+
+// number revalidator
+function reValidateCred(arr){  
+    // reverse the array
+    let revArr = arr.slice();
+    revArr.reverse();
+
+ 
+
+    let checkSum = 0;
+    // run through the reversed array 
+    for(let i = 1;i<revArr.length;i++){
+        // if the counter is even multiply by 2 otherwise by 1 
+        let num = revArr[i]*(1+(i%2));
+        // if 10 or over subtract 9
+        if (num>=10){num -=9};
+        // add the final number to the checksum
+        checkSum +=num;
+
+
+    }
+    // true if the units digit of the checksum is 0 (checksum mod 10 is 0)
+    let checkDigit = (10-(checkSum%10))%10
+    arr.pop()
+    arr.push(checkDigit)
+
+    return arr
+   
+}
+
+// tests 
+
+console.log(reValidateCred (valid1)) // shold return valid1
+console.log(reValidateCred (invalid1)) // should return different from invalid1
+console.log(validateCred(reValidateCred (invalid1))) // should return true
+console.log(validateCred (SplitString("4556167224261065")))//should return false
+console.log(validateCred (reValidateCred(SplitString("4556167224261065"))))//should return true
 
 
